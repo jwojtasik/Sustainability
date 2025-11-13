@@ -66,7 +66,7 @@ if selected_models:
         mins.append(min(data['Mean inventory per demand unit'] - .005))
 
     fig.update_layout(
-        title=f'Efficiency Curves for Q = {selected_Q}, L = {selected_L}',
+        title=f'Efficiency Curves for Q = {selected_Q} and L = {selected_L}',
         xaxis=dict(range=[min(mins), 
                           max(maxes)]),
         xaxis_title='Mean inventory per demand unit',
