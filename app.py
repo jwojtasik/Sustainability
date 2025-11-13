@@ -2,25 +2,22 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-# Wczytywanie danych
 @st.cache_data
 def load_data():
-    df1 = pd.read_excel('v2_M3_smaller_wyniki_25000.xlsx', index_col=[0, 1, 2, 3])
-    df2 = pd.read_excel('v2_M3_smaller_wyniki_50000.xlsx', index_col=[0, 1, 2, 3])
+    df1 = pd.read_csv('M3_25000.csv', index_col=[0, 1, 2, 3])
+    df2 = pd.read_csv('M3_50000.csv', index_col=[0, 1, 2, 3])
     df = pd.concat([df1, df2]).reset_index()
     return df
 
 df = load_data()
 
-# Parametry
 Qs = [25000, 50000]
 Ls = [1, 2]
-available_models = sorted(df['index'].unique())
 
-# Interfejs użytkownika
 st.title("Efficiency Curve Visualization")
 
-st.markdown('''In this application we present the individual outputs for the results of the computation obtained in the manuscript (full details printed after the blind revision). The Methods to select are following:
+st.markdown('''In this application we present the individual outputs for the results of the computation obtained in the manuscript _Achieving Service Level and Sustainability Goals Through Targeted Inventory Forecasting in Re-Order Point
+Systems with Fill Rate Commitments_ by Jakub Wojtasik and Joanna Bruzda. The Methods to select are following:
 
 - Method I assumes data generation according to model (3), 
 
@@ -28,7 +25,7 @@ st.markdown('''In this application we present the individual outputs for the res
 
 - Method III employs the GAS(1,1) model, 
 
-- Method IV utilizes distributional forecasts generated via DeepAR, 
+- Method IV utilizes distributional forecasts generated via DeepAR, and IVa is an extended version optimized with the wider parameters space 
 
 - Method V applies a two-step procedure without distributional assumptions, 
 
@@ -41,14 +38,13 @@ To print one individual or multiple curves, select the model under proper settin
 selected_Q = st.selectbox("Select demand quantity (Q):", Qs)
 selected_L = st.selectbox("Select lead time (L):", [0,1])
 
-unroman = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6, 'VII': 7}
+unroman = {'I': '1', 'II': '2', 'III': '3', 'IV': '4',  'IVa': '4a', 'V': '5', 'VI': '6', 'VII': '7'}
 available_models = list(unroman.keys())
 
 selected_models = st.multiselect("Select Methods:", available_models, default=['II'])
 
-unroman = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6, 'VII': 7}
+#unroman = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'IVa': '4a', 'V': 5, 'VI': 6, 'VII': 7}
 
-# Rysowanie wykresu
 if selected_models:
     maxes = []
     mins = []
@@ -79,7 +75,6 @@ if selected_models:
         template='plotly_white'
     )
 
-    # Dodanie poziomych linii referencyjnych
     for fr in [0.95, 0.975, 0.99, 0.995]:
         fig.add_shape(type='line',
                       x0=min(df['Mean inventory per demand unit'] - .005),
