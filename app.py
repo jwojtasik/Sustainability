@@ -35,7 +35,7 @@ Systems with Fill Rate Commitments_ by Jakub Wojtasik and Joanna Bruzda. The Met
 
 To print one individual or multiple curves, select the model under proper settings of L and Q.''')
 
-selected_Q = st.selectbox("Select demand quantity (Q):", Qs)
+selected_Q = st.selectbox("Select demand quantity (Q):", [format(Q, ',') for Q in Qs])
 selected_L = st.selectbox("Select lead time (L):", [0,1])
 
 unroman = {'I': '1', 'II': '2', 'III': '3', 'IV': '4',  'IVa': '4a', 'V': '5', 'VI': '6', 'VII': '7'}
@@ -66,7 +66,7 @@ if selected_models:
         mins.append(min(data['Mean inventory per demand unit'] - .005))
 
     fig.update_layout(
-        title=f'Efficiency Curves for Q = {selected_Q}, L = {selected_L}',
+        title=f'Efficiency Curves for Q = {format(selected_Q, ',')}, L = {selected_L}',
         xaxis=dict(range=[min(mins), 
                           max(maxes)]),
         xaxis_title='Mean inventory per demand unit',
