@@ -52,7 +52,7 @@ if selected_models:
     
     for r_model in selected_models:
         model = unroman[r_model]
-        data = df[(df['Q'] == selected_Q) & (df['L'] == selected_L+1) & (df['index'] == model)]
+        data = df[(df['Q'] == int(selected_Q.replace(',',''))) & (df['L'] == selected_L+1) & (df['index'] == model)]
         fig.add_trace(go.Scatter(
             x=data['Mean inventory per demand unit'],
             y=data['FR'],
@@ -66,7 +66,7 @@ if selected_models:
         mins.append(min(data['Mean inventory per demand unit'] - .005))
 
     fig.update_layout(
-        title=f'Efficiency Curves for Q = {format(selected_Q, ',')}, L = {selected_L}',
+        title=f'Efficiency Curves for Q = {selected_Q}, L = {selected_L}',
         xaxis=dict(range=[min(mins), 
                           max(maxes)]),
         xaxis_title='Mean inventory per demand unit',
